@@ -1,3 +1,4 @@
+sudo xcodebuild -license accept
 sudo dscl . -create /Users/research
 sudo dscl . -create /Users/research UserShell /bin/bash
 sudo dscl . -create /Users/research RealName "Research" 
