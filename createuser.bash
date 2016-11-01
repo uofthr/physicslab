@@ -5,6 +5,7 @@ sudo dscl . -create /Users/research RealName "Research"
 sudo dscl . -create /Users/research UniqueID "510"
 sudo dscl . -create /Users/research PrimaryGroupID 20
 sudo dscl . -create /Users/research NFSHomeDirectory /Users/research
+sudo createhomedir -u research
 
 echo "Enter new research password"
 sudo dscl . -passwd /Users/research 
