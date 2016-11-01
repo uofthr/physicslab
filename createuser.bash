@@ -22,15 +22,8 @@ sudo mv gmond.conf /usr/local/etc/gmond.conf
 curl -O https://raw.githubusercontent.com/uofthr/physicslab/master/su.cron
 sudo crontab su.cron
 
-whoami
-echo "su to research"
+sudo -u research whoami
 
-su research
+sudo -u research cat /dev/zero | ssh-keygen -q -N ""
 
-whoami
-
-cat /dev/zero | ssh-keygen -q -N ""
-
-cd .ssh
-
-curl -O https://raw.githubusercontent.com/uofthr/physicslab/master/authorized_keys
+curl https://raw.githubusercontent.com/uofthr/physicslab/master/authorized_keys --output /Users/research/.ssh/authorized_keys
