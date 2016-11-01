@@ -5,6 +5,9 @@ sudo dscl . -create /Users/research RealName "Research"
 sudo dscl . -create /Users/research UniqueID "510"
 sudo dscl . -create /Users/research PrimaryGroupID 20
 sudo dscl . -create /Users/research NFSHomeDirectory /Users/research
+sudo dscl . append /Groups/com.apple.access_ssh user research
+sudo dscl . append /Groups/com.apple.access_ssh groupmembers `dscl . read /Users/research GeneratedUID | cut -d " " -f 2`
+
 
 sudo cp -R /System/Library/User\ Template/English.lproj /Users/research
 sudo chown -R research:staff /Users/research
