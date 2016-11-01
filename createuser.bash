@@ -12,7 +12,9 @@ sudo dscl . append /Groups/com.apple.access_ssh groupmembers `dscl . read /Users
 sudo cp -R /System/Library/User\ Template/English.lproj /Users/research
 sudo chown -R research:staff /Users/research
 
-echo "Enter new research password"
+echo "\n\n\n================================"
+echo "Enter new research user password"
+echo "================================"
 sudo dscl . -passwd /Users/research 
 
 sudo systemsetup -setremotelogin on
