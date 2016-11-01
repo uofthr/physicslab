@@ -12,8 +12,12 @@ sudo dscl . append /Groups/com.apple.access_ssh groupmembers `dscl . read /Users
 sudo cp -R /System/Library/User\ Template/English.lproj /Users/research
 sudo chown -R research:staff /Users/research
 
-echo "\n\n\n================================"
+echo "================================"
+echo "================================"
+echo "================================"
 echo "Enter new research user password"
+echo "================================"
+echo "================================"
 echo "================================"
 sudo dscl . -passwd /Users/research 
 
