@@ -1,10 +1,10 @@
-dscl . -create /Users/research
-dscl . -create /Users/research UserShell /bin/bash
-dscl . -create /Users/research RealName "Research" 
-dscl . -create /Users/research UniqueID "510"
-dscl . -create /Users/research PrimaryGroupID 20
-dscl . -create /Users/research NFSHomeDirectory /Users/research
-dscl . -passwd /Users/research 
+sudo dscl . -create /Users/research
+sudo dscl . -create /Users/research UserShell /bin/bash
+sudo dscl . -create /Users/research RealName "Research" 
+sudo dscl . -create /Users/research UniqueID "510"
+sudo dscl . -create /Users/research PrimaryGroupID 20
+sudo dscl . -create /Users/research NFSHomeDirectory /Users/research
+sudo dscl . -passwd /Users/research 
 
 sudo systemsetup -setremotelogin on
 
