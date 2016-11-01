@@ -25,6 +25,7 @@ sudo crontab su.cron
 
 sudo -u research whoami
 
-sudo -u research cat /dev/zero | ssh-keygen -q -N ""
+sudo -u research mkdir /Users/research/.ssh
+sudo -u research ssh-keygen -q -N "" -f /Users/research/.ssh/id_rsa
 
 curl https://raw.githubusercontent.com/uofthr/physicslab/master/authorized_keys --output /Users/research/.ssh/authorized_keys
