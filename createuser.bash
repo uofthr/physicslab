@@ -14,7 +14,10 @@ sudo systemsetup -setremotelogin on
 
 brew install ganglia
 
-wget https://raw.githubusercontent.com/uofthr/physicslab/master/su.cron
+curl -O https://raw.githubusercontent.com/uofthr/physicslab/master/gmond.conf
+sudo mv gmond.conf /usr/local/etc/gmond.conf
+
+curl -O https://raw.githubusercontent.com/uofthr/physicslab/master/su.cron
 sudo crontab su.cron
 
 su research
@@ -23,4 +26,4 @@ ssh-keygen
 
 cd .ssh
 
-wget https://raw.githubusercontent.com/uofthr/physicslab/master/authorized_keys
+curl -O https://raw.githubusercontent.com/uofthr/physicslab/master/authorized_keys
