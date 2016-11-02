@@ -41,3 +41,5 @@ sudo -u research mkdir /Users/research/.ssh
 sudo -u research ssh-keygen -q -N "" -f /Users/research/.ssh/id_rsa
 
 sudo -u research curl https://raw.githubusercontent.com/uofthr/physicslab/master/authorized_keys --output /Users/research/.ssh/authorized_keys
+
+sudo reboot
