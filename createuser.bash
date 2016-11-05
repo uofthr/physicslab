@@ -22,7 +22,8 @@ echo "================================"
 sudo dscl . -passwd /Users/research 
 
 sudo systemsetup -setremotelogin on
-
+sudo dseditgroup -o edit -a research -t user admim
+sudo dseditgroup -o edit -a research -t user wheel
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
@@ -41,5 +42,7 @@ sudo -u research mkdir /Users/research/.ssh
 sudo -u research ssh-keygen -q -N "" -f /Users/research/.ssh/id_rsa
 
 sudo -u research curl https://raw.githubusercontent.com/uofthr/physicslab/master/authorized_keys --output /Users/research/.ssh/authorized_keys
+
+
 
 sudo reboot
