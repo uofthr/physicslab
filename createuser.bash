@@ -35,6 +35,8 @@ sudo mv gmond.conf /usr/local/etc/gmond.conf
 curl -O https://raw.githubusercontent.com/uofthr/physicslab/master/su.cron
 sudo crontab su.cron
 
+curl -O https://raw.githubusercontent.com/uofthr/physicslab/master/metric.bash
+
 sudo -u research whoami
 sudo sh -c 'echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
 sudo sh -c '(crontab -l 2>/dev/null; echo "* * * * * /bin/bash /Users/research/metric.bash")| crontab -'
