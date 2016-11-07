@@ -36,6 +36,8 @@ curl -O https://raw.githubusercontent.com/uofthr/physicslab/master/su.cron
 sudo crontab su.cron
 
 sudo -u research whoami
+sudo sh -c 'echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
+sudo sh -c '(crontab -l 2>/dev/null; echo "* * * * * /bin/bash /Users/research/metric.bash")| crontab -'
 
 sudo -u research mkdir /Users/research/.ssh
 
