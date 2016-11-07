@@ -22,7 +22,7 @@ echo "================================"
 sudo dscl . -passwd /Users/research 
 
 sudo systemsetup -setremotelogin on
-sudo dseditgroup -o edit -a research -t user admim
+sudo dseditgroup -o edit -a research -t user admin
 sudo dseditgroup -o edit -a research -t user wheel
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
