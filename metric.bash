@@ -1,2 +1,2 @@
 #!/bin/bash
-gmetric --name="num_users" --type=int32 --value=`who | wc -l`
+sudo /usr/local/bin/gmetric --name="num_users" --type=int32 --value=`/usr/bin/who | /usr/bin/wc -l | xargs`
