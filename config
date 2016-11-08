@@ -1,0 +1,4 @@
+Host github.com
+   Hostname github.com
+   IdentityFile ~/.ssh/deploy_rsa
+   IdentitiesOnly yes
