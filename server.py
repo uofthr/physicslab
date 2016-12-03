@@ -32,24 +32,24 @@ def upload_file():
         """
     conn = sqlite3.connect('/home/rein/git/physicslab/status.db')
     c = conn.cursor()
-    for row in c.execute('SELECT * FROM status ORDER BY date'):
+    for row in c.execute('SELECT host, isup, status, users FROM status ORDER BY date'):
         html += "<tr>"
         for i,c in enumerate(row):
             if i==0:
                 html += "<td>"+c+"</td>"
-            elif i==2:
+            elif i==1:
                 if c==1:
                     html += "<td style='background-color: green;'>%d</td>"%c
                 else:
                     html += "<td style='background-color: red;'>%d</td>"%c
-            elif i==3:
+            elif i==2:
                 if c>0:
                     html += "<td style='background-color: orange;'>%d</td>"%c
                 elif c==0:
                     html += "<td style='background-color: green;'>%d</td>"%c
                 else:
                     html += "<td>%d</td>"%c
-            elif i==4:
+            elif i==3:
                 if c>0:
                     html += "<td style='background-color: orange;'>%d</td>"%c
                 elif c==0:
