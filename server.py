@@ -4,6 +4,7 @@ import subprocess
 from flask import Flask, request 
 import math
 import csv
+import sqlite3
 
 class FlaskApp(Flask):
     def __init__(self, *args, **kwargs):
@@ -20,38 +21,87 @@ def upload_file():
     html = """
         <!doctype html>
         <title>Status</title>
-        <h1>Status</h1>
+        <h1>Machines</h1>
         <table border=1>
             <tr>
                 <th>Host</th>
                 <th>Up</th>
+                <th>Status</th>
                 <th>Users</th>
             </tr>
         """
-    with open("/home/rein/git/physicslab/status.csv", "r") as csvfile:
-        reader = csv.reader(csvfile)
-        for r in reader:
-            html += "<tr>"
-            for i,c in enumerate(r):
-                if i==1:
-                    if c=="1":
-                        html += "<td style='background-color: green;'>"+c+"</td>"
-                    else:
-                        html += "<td style='background-color: red;'>"+c+"</td>"
-                elif i==2:
-                    if int(c)>0:
-                        html += "<td style='background-color: orange;'>"+c+"</td>"
-                    elif int(c)==0:
-                        html += "<td style='background-color: green;'>"+c+"</td>"
-                    else:
-                        html += "<td>"+c+"</td>"
-
+    conn = sqlite3.connect('/home/rein/git/physicslab/status.db')
+    c = conn.cursor()
+    for row in c.execute('SELECT * FROM status ORDER BY date'):
+        html += "<tr>"
+        for i,c in enumerate(row):
+            if i==0:
+                html += "<td>"+c+"</td>"
+            elif i==2:
+                if c==1:
+                    html += "<td style='background-color: green;'>%d</td>"%c
                 else:
+                    html += "<td style='background-color: red;'>%d</td>"%c
+            elif i==3:
+                if c>0:
+                    html += "<td style='background-color: orange;'>%d</td>"%c
+                elif c==0:
+                    html += "<td style='background-color: green;'>%d</td>"%c
+                else:
+                    html += "<td>%d</td>"%c
+            elif i==4:
+                if c>0:
+                    html += "<td style='background-color: orange;'>%d</td>"%c
+                elif c==0:
+                    html += "<td style='background-color: green;'>%d</td>"%c
+                else:
+                    html += "<td>%d</td>"%c
+
+        html += "</tr>"
+    conn.commit()
+    conn.close()
+    html += """
+        </table>
+        <h1>Jobs</h1>
+        <table border=1>
+            <tr>
+                <th>ID</th>
+                <th>date</th>
+                <th>command</th>
+                <th>host</th>
+                <th>status</th>
+            </tr>
+        """
+    conn = sqlite3.connect('/home/rein/git/physicslab/jobs.db')
+    c = conn.cursor()
+    for row in c.execute('SELECT id, date,command,host,status FROM jobs ORDER BY date'):
+        html += "<tr>"
+        for i,c in enumerate(row):
+            if i==0:
+                html += "<td>%d</td>"%c
+            if i==1:
+                html += "<td>"+c+"</td>"
+            elif i==2:
+                html += "<td>"+c+"</td>"
+            elif i==3:
+                if c is not None:
                     html += "<td>"+c+"</td>"
-            html += "</tr>"
+                else:
+                    html += "<td>-</td>"
+            elif i==4:
+                if c>0:
+                    html += "<td style='background-color: light-green;'>%d</td>"%c
+                elif c==0:
+                    html += "<td style='background-color: orange;'>Waiting (%d)</td>"%c
+                else:
+                    html += "<td style='background-color: red;'>%d</td>"%c
+        html += "</tr>"
     html += """
         </table>
         """
+    conn.commit()
+    conn.close()
+
     return html
     sid = request.form['sid']
     try:
