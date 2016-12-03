@@ -22,7 +22,7 @@ echo "================================"
 sudo dscl . -passwd /Users/research 
 
 sudo systemsetup -setremotelogin on
-sudo dseditgroup -o edit -a research -t user admim
+sudo dseditgroup -o edit -a research -t user admin
 sudo dseditgroup -o edit -a research -t user wheel
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -37,6 +37,7 @@ sudo crontab su.cron
 
 curl -O https://raw.githubusercontent.com/uofthr/physicslab/master/metric.bash
 
+sudo pmset autorestart 1
 sudo -u research whoami
 sudo sh -c 'echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
 sudo sh -c '(crontab -l 2>/dev/null; echo "* * * * * /bin/bash /Users/research/metric.bash")| crontab -'
