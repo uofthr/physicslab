@@ -28,11 +28,12 @@ def upload_file():
                 <th>Up</th>
                 <th>Status</th>
                 <th>Users</th>
+                <th>Usage</th>
             </tr>
         """
     conn = sqlite3.connect('/home/rein/git/physicslab/status.db')
     c = conn.cursor()
-    for row in c.execute('SELECT host, isup, status, users FROM status ORDER BY date'):
+    for row in c.execute('SELECT host, isup, status, users, usage FROM status ORDER BY date'):
         html += "<tr>"
         for i,c in enumerate(row):
             if i==0:
@@ -56,6 +57,13 @@ def upload_file():
                     html += "<td style='background-color: green;'>%d</td>"%c
                 else:
                     html += "<td>%d</td>"%c
+            elif i==4:
+                if c>50.:
+                    html += "<td style='background-color: orange;'>%30.f</td>"%c
+                elif c>100.:
+                    html += "<td style='background-color: red;'>%30.f</td>"%c
+                else:
+                    html += "<td style='background-color: green;'>%30.f</td>"%c
 
         html += "</tr>"
     conn.commit()
