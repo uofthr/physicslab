@@ -44,9 +44,9 @@ while 1:
         ssh.close()
     
     # command waiting for main command to finish
-    todo = cj.execute("SELECT id,host,commandpost FROM jobs WHERE status==2").fetchall()
+    todo = cj.execute("SELECT name,id,host,filecopypost, commandpost FROM jobs WHERE status==2").fetchall()
     for pref in todo:
-        jobid, host,commandpost = pref
+        name, jobid, host,filecopypost,commandpost = pref
         ssh.connect(host, timeout=3, username='research', pkey=k)
         stdin, stdout, stderr = ssh.exec_command("ls /tmp/done.tag >/dev/null")
         if len(stderr.read())>0:
@@ -54,6 +54,13 @@ while 1:
         else:
             done = 1
             stdin, stdout, stderr = ssh.exec_command("rm /tmp/done.tag")
+            
+            sftp = ssh.open_sftp()
+            localfile="/data0/rein/physicslab/"+name+"_%09d.bin"%jobid
+            sftp.get(filecopypost, localfile)
+            sftp.close()
+
+
             cs.execute("UPDATE status SET status=3 WHERE host='%s'"%(host))
             conns.commit()
             cj.execute("UPDATE jobs SET status=3 WHERE id=%d"%(jobid))

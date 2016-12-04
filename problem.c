@@ -44,6 +44,7 @@ int main(int argc, char* argv[]) {
 
     // Run sim
     r->additional_forces = gr_force;
-    reb_integrate(r, 5.1553e10); //10 Gyr
+    //reb_integrate(r, 5.1553e10); //10 Gyr
+    reb_integrate(r, r->t+1e6*6.); //1Myr
 }
 
