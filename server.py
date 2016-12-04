@@ -33,7 +33,7 @@ def upload_file():
         """
     conn = sqlite3.connect('/home/rein/git/physicslab/status.db')
     c = conn.cursor()
-    for row in c.execute('SELECT host, isup, status, users, usage FROM status ORDER BY date'):
+    for row in c.execute('SELECT host, isup, status, users, usage FROM status ORDER BY host'):
         html += "<tr>"
         for i,c in enumerate(row):
             if i==0:
@@ -90,7 +90,7 @@ def upload_file():
             if i==1:
                 html += "<td>"+c+"</td>"
             elif i==2:
-                html += "<td>"+c+"</td>"
+                html += "<td><pre>"+c+"</pre></td>"
             elif i==3:
                 if c is not None:
                     html += "<td>"+c+"</td>"

@@ -6,8 +6,8 @@ k = paramiko.RSAKey.from_private_key_file("/home/rein/.ssh/id_rsa")
 ssh = paramiko.SSHClient()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-connj = sqlite3.connect("/home/rein/git/physicslab/jobs.db")
-conns = sqlite3.connect("/home/rein/git/physicslab/status.db")
+connj = sqlite3.connect("/home/rein/git/physicslab/jobs.db", timeout=10)
+conns = sqlite3.connect("/home/rein/git/physicslab/status.db", timeout=10)
 cj = connj.cursor()
 cs = conns.cursor()
 while 1:
@@ -16,13 +16,19 @@ while 1:
     if todo:
         freehost = cs.execute("SELECT host FROM status WHERE isup=1 AND status=0 LIMIT 1").fetchone()
         if freehost:
+            jobid, commandpre = todo
+            print("exex pre: "+commandpre)
             host = freehost[0]
             cs.execute("UPDATE status SET status=1 WHERE host='%s'"%(host))
             conns.commit()
-            cj.execute("UPDATE jobs SET host='%s', status=1 WHERE id=%d"%(host,todo[0]))
+            cj.execute("UPDATE jobs SET host='%s', status=1 WHERE id=%d"%(host,jobid))
             connj.commit()
             ssh.connect(host, timeout=3, username='research', pkey=k)
-            stdin , stdout, stderr = ssh.exec_command(todo[1])
+            stdin , stdout, stderr = ssh.exec_command(commandpre)
+            out = stdout.read()
+            #print(out)
+            #out = stderr.read()
+            #print(out)
             ssh.close()
     time.sleep(1)
     # command waiting for pre to finish
@@ -34,13 +40,16 @@ while 1:
         if len(stderr.read())>0:
             done = 0
         else:
+            print("exex: "+command)
             done = 1
             stdin, stdout, stderr = ssh.exec_command("rm /tmp/done.tag")
+            out = stdout.read()
             cs.execute("UPDATE status SET status=2 WHERE host='%s'"%(host))
             conns.commit()
             cj.execute("UPDATE jobs SET status=2 WHERE id=%d"%(jobid))
             connj.commit()
             stdin, stdout, stderr = ssh.exec_command(command)
+            out = stdout.read()
         ssh.close()
     
     # command waiting for main command to finish
@@ -54,18 +63,22 @@ while 1:
         else:
             done = 1
             stdin, stdout, stderr = ssh.exec_command("rm /tmp/done.tag")
+            out = stdout.read()
             
+            print("copy post")
             sftp = ssh.open_sftp()
             localfile="/data0/rein/physicslab/"+name+"_%09d.bin"%jobid
             sftp.get(filecopypost, localfile)
             sftp.close()
 
 
+            print("exec post")
             cs.execute("UPDATE status SET status=3 WHERE host='%s'"%(host))
             conns.commit()
             cj.execute("UPDATE jobs SET status=3 WHERE id=%d"%(jobid))
             connj.commit()
             stdin, stdout, stderr = ssh.exec_command(commandpost)
+            out = stdout.read()
         ssh.close()
     
     # command waiting for post command to finish
@@ -78,24 +91,13 @@ while 1:
             done = 0
         else:
             done = 1
+            print("all done")
             stdin, stdout, stderr = ssh.exec_command("rm /tmp/done.tag")
+            out = stdout.read()
             cs.execute("UPDATE status SET status=0 WHERE host='%s'"%(host))
             conns.commit()
             cj.execute("UPDATE jobs SET status=4 WHERE id=%d"%(jobid))
             connj.commit()
         ssh.close()
 
-
-    #sys.stdout.write('.')
-    #sys.stdout.flush()
-    #try:
-    #    users = int(stdout.read().decode('ascii').strip())
-    #except Exception as e:
-    #    isup = 0
-    #    users = -1
-    #ssh.close()
-    #date = time.strftime("%Y-%m-%d %H:%M:%S")
-    #c.execute("UPDATE status SET date='%s', isup=%d, users=%d WHERE host='%s'" % (date,isup,users,host))
-
-    #c.execute("INSERT INTO status VALUES ('"+date+"', '"+host+"', 0, 0, 0)")
 sys.stdout.write('\n')
