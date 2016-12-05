@@ -4,9 +4,9 @@ c = conn.cursor()
 #c.execute("DROP TABLE jobs")
 #c.execute('''CREATE TABLE jobs (id integer primary key autoincrement, name text, date text, commandpre text, command text, filecopypost text, commandpost text, commandpause text, host text, status int)''')
 
-name            = "run1"
+name            = "run2"
 filecopypost    = "/tmp/rebound/problems/ss_lab1/restart_0051_col.bin"
-commandpre      = "bash <(curl -s https://raw.githubusercontent.com/uofthr/ss_lab1/master/pre.bash?dda) "
+commandpre      = "bash <(curl -s 'https://raw.githubusercontent.com/uofthr/ss_lab1/7e82b4f/pre.bash') "
 command         = "nohup sh -c 'cd /tmp/rebound/problems/ss_lab1 && ./rebound && touch /tmp/done.tag || touch /tmp/error.tag' &"
 commandpost     = "nohup sh -c 'rm -rf /tmp/rebound && touch /tmp/done.tag || touch /tmp/error.tag' &"
 commandpause    = "killall rebound"
