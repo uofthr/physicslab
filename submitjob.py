@@ -1,10 +1,10 @@
 import sqlite3
 conn = sqlite3.connect('jobs.db',timeout=3)
 c = conn.cursor()
-#c.execute("DROP TABLE jobs")
-#c.execute('''CREATE TABLE jobs (id integer primary key autoincrement, name text, date text, commandpre text, command text, filecopypost text, commandpost text, commandpause text, host text, status int)''')
+c.execute("DROP TABLE jobs")
+c.execute('''CREATE TABLE jobs (id integer primary key autoincrement, name text, date text, commandpre text, command text, filecopypost text, commandpost text, commandpause text, host text, status int)''')
 
-commit          = "6b75261"
+commit          = "b4abe6b"
 name            = commit
 filecopypost    = "/tmp/rebound/problems/ss_lab1/run1_*.bin"
 commandpre      = "bash <(curl -s 'https://raw.githubusercontent.com/uofthr/ss_lab1/%s/pre.bash') "%commit

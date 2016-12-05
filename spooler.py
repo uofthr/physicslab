@@ -50,7 +50,7 @@ while 1:
             cj.execute("UPDATE jobs SET status=3 WHERE id=%d"%(jobid))
             connj.commit()
 
-            localfile="/data0/rein/physicslab/"+name+"%09d"%jobid
+            localfile="/data0/rein/physicslab/"+name+"_%09d"%jobid
             ret = os.popen("mkdir "+localfile).read()
             ret = os.popen("scp research@%s:'%s' %s/"%(host,filecopypost,localfile)).read()
 
