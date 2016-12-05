@@ -98,16 +98,18 @@ def upload_file():
                     html += "<td>-</td>"
             elif i==4:
                 if c==0:
-                    html += "<td style='background-color: orange;'>Waitingto start (%d)</td>"%c
+                    html += "<td style='background-color: orange;'>Waiting to start (%d)</td>"%c
                 elif c==1:
                     html += "<td style='background-color: orange;'>Running preparation (%d)</td>"%c
                 elif c==2:
                     html += "<td style='background-color: orange;'>Running (%d)</td>"%c
                 elif c==3:
-                    html += "<td style='background-color: orange;'>Running post (%d)</td>"%c
+                    html += "<td style='background-color: orange;'>Running copy (%d)</td>"%c
                 elif c==4:
-                    html += "<td style='background-color: green;'>Done (%d)</td>"%c
+                    html += "<td style='background-color: orange;'>Running post (%d)</td>"%c
                 elif c==5:
+                    html += "<td style='background-color: green;'>Done (%d)</td>"%c
+                elif c==6:
                     html += "<td style='background-color: orange;'>Paused (%d)</td>"%c
                 else:
                     html += "<td style='background-color: red;'>%d</td>"%c

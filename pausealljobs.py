@@ -16,9 +16,9 @@ for pref in todo:
     jobid, host,commandpause = pref
     ssh.connect(host, timeout=3, username='research', pkey=k)
     stdin, stdout, stderr = ssh.exec_command(commandpause)
-    cs.execute("UPDATE status SET status=5 WHERE host='%s'"%(host))
+    cs.execute("UPDATE status SET status=6 WHERE host='%s'"%(host))
     conns.commit()
-    cj.execute("UPDATE jobs SET status=5 WHERE id=%d"%(jobid))
+    cj.execute("UPDATE jobs SET status=6 WHERE id=%d"%(jobid))
     connj.commit()
 
 sys.stdout.write('\n')

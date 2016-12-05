@@ -4,6 +4,14 @@ import paramiko
 k = paramiko.RSAKey.from_private_key_file("/home/rein/.ssh/id_rsa")
 ssh = paramiko.SSHClient()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+conn = sqlite3.connect('jobs.db')
+c = conn.cursor()
+c.execute("UPDATE jobs SET status=4 WHERE 1")
+conn.commit()
+conn.close()
+
+
 conn = sqlite3.connect('status.db')
 c = conn.cursor()
 c.execute("UPDATE status SET status=0 WHERE 1")

@@ -10,7 +10,7 @@ connj = sqlite3.connect("/home/rein/git/physicslab/jobs.db")
 cj = connj.cursor()
 conns = sqlite3.connect("/home/rein/git/physicslab/status.db")
 cs = conns.cursor()
-todo = cj.execute("SELECT id,host,command FROM jobs WHERE status==5").fetchall()
+todo = cj.execute("SELECT id,host,command FROM jobs WHERE status==6").fetchall()
 for pref in todo:
     sys.stdout.write('.')
     jobid, host,command = pref
