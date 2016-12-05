@@ -1,3 +1,4 @@
+import subprocess
 import os
 import sqlite3
 import time
@@ -17,7 +18,7 @@ while 1:
             print("exex pre: "+commandpre)
             host = freehost[0]
             
-            ret = os.popen("ssh research@%s \"rm /tmp/done.tag\""%host).read()
+            ret = os.popen("ssh research@%s 'rm /tmp/done.tag'"%host).read()
 
             cs.execute("UPDATE status SET status=1 WHERE host='%s'"%(host))
             conns.commit()
@@ -38,8 +39,8 @@ while 1:
     todo = cj.execute("SELECT name,id,host,filecopypost, commandpost FROM jobs WHERE status==2").fetchall()
     for pref in todo:
         name, jobid, host,filecopypost,commandpost = pref
-        ret = os.popen("ssh research@%s 'ls /tmp/done.tag 2>&1'"%host).read()
-        if "No such" not in ret:
+        ret = subprocess.call("ssh research@%s 'ls /tmp/done.tag &>/dev/null'"%host, shell=True)
+        if ret==0:
             ret = os.popen("ssh research@%s 'rm -f /tmp/*.tag'"%host).read()
             
             print("copy post")
@@ -49,8 +50,9 @@ while 1:
             cj.execute("UPDATE jobs SET status=3 WHERE id=%d"%(jobid))
             connj.commit()
 
-            localfile="/data0/rein/physicslab/"+name+"_%09d.bin"%jobid
-            ret = os.popen("scp research@%s:%s %s'"%(host,filecopypost,localfile)).read()
+            localfile="/data0/rein/physicslab/"+name+"%09d"%jobid
+            ret = os.popen("mkdir "+localfile).read()
+            ret = os.popen("scp research@%s:'%s' %s/"%(host,filecopypost,localfile)).read()
 
             cs.execute("UPDATE status SET status=4 WHERE host='%s'"%(host))
             conns.commit()
@@ -65,7 +67,7 @@ while 1:
 
             cs.execute("UPDATE status SET status=0 WHERE host='%s'"%(host))
             conns.commit()
-            cj.execute("UPDATE jobs SET status=4 WHERE id=%d"%(jobid))
+            cj.execute("UPDATE jobs SET status=5 WHERE id=%d"%(jobid))
             connj.commit()
-
+    time.sleep(1.)
 sys.stdout.write('\n')

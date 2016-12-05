@@ -75,14 +75,14 @@ def upload_file():
             <tr>
                 <th>ID</th>
                 <th>date</th>
-                <th>command</th>
+                <th>name</th>
                 <th>host</th>
                 <th>status</th>
             </tr>
         """
     conn = sqlite3.connect('/home/rein/git/physicslab/jobs.db')
     c = conn.cursor()
-    for row in c.execute('SELECT id, date,command,host,status FROM jobs ORDER BY date'):
+    for row in c.execute('SELECT id, date,name,host,status FROM jobs ORDER BY date'):
         html += "<tr>"
         for i,c in enumerate(row):
             if i==0:
